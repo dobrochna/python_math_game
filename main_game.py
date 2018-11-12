@@ -19,6 +19,6 @@ if __name__ == "__main__":
                 break
 
     game_table = table.Table(size)
-    print(game_table.table)
+    print(game_table.num_list)
+    print(game_table.num_table)
     print(game_table.take_table)
-    print(game_table.sums_rows)
