@@ -1,4 +1,5 @@
 import random
+from colors import red
 
 
 class Table:  # create and fill table for the game
@@ -35,10 +36,10 @@ class Table:  # create and fill table for the game
         self.take_table = list(map(list, zip(*transposed_take_table)))
 
         # calculate sums for rows
-        for subelementlist, sebdecisionlist in zip(self.num_table, self.take_table):
+        for subelementlist, subdecisionlist in zip(self.num_table, self.take_table):
             counter_rows = 0
             summary_rows = 0
-            for element, decision in zip(subelementlist, sebdecisionlist):
+            for element, decision in zip(subelementlist, subdecisionlist):
                 if decision == 1:
                     summary_rows += element
                 counter_rows += 1
@@ -46,19 +47,25 @@ class Table:  # create and fill table for the game
                     self.sums_rows.append(summary_rows)
 
         # calculate sums for columns
-        for subelementlist, sebdecisionlist in zip(transposed_num_table, transposed_take_table):
+        for subelementlist, subdecisionlist in zip(transposed_num_table, transposed_take_table):
             counter_columns = 0
             summary_columns = 0
-            for element, decision in zip(subelementlist, sebdecisionlist):
+            for element, decision in zip(subelementlist, subdecisionlist):
                 if decision == 1:
                     summary_columns += element
                 counter_columns += 1
                 if counter_columns == size:
                     self.sums_columns.append(summary_columns)
 
-    def __print__(self, size):
-        # print empty table
-        print('----'*size)
-        print('|' + '   |'*size)
+    def print_table(self, size):
+        # print table with numbers
+        for subelemenlist, row_sum in zip(self.num_table, self.sums_rows):
+            print('....' * size)
+            subliststring = ' | '.join(map(str, subelemenlist))
+            print('| ' + subliststring + ' |' + '  ' + red(str(row_sum)))
+
+        print('....' * size)
+        columsumslist = '   '.join(map(str, self.sums_columns))
+        print(red(' ' + columsumslist))
 
 
