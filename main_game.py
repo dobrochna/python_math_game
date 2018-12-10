@@ -1,4 +1,5 @@
 import table
+import gui
 
 
 if __name__ == "__main__":
@@ -19,8 +20,5 @@ if __name__ == "__main__":
                 break
 
     game_table = table.Table(size)
-    game_table.print_table(size)
-    print(game_table.num_table)
-    print(game_table.take_table)
-    print(game_table.sums_rows)
-    print(game_table.sums_columns)
+    window = gui.Window()
+    window.root.mainloop()
