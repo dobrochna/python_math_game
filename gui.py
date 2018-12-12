@@ -1,8 +1,10 @@
 import tkinter as tk
+import table
 
 
 class Window:
     def __init__(self):
+        # init window for the game
         self.root = tk.Tk()
         self.root.geometry("500x500")
         self.image = tk.PhotoImage(file="logo.png")
@@ -15,29 +17,41 @@ class Window:
         self.init_buttons()
 
     def init_buttons(self):
-        self.three_button = tk.Button(self.root, text="3x3", activebackground="light blue", bd=4,
-                                      command=lambda: self.display_table(3))
+        # init buttons in window to choose the size of the table
+        self.three_button = tk.Button(self.root, text="3x3", activebackground="#0099e6", bd=4,
+                                      command=lambda: self.init_grid(3))
         self.three_button.place(x=150, y=150)
-        self.four_button = tk.Button(self.root, text="4x4", activebackground="light blue", bd=4,
-                                     command=lambda: self.display_table(4))
+        self.four_button = tk.Button(self.root, text="4x4", activebackground="#0099e6", bd=4,
+                                     command=lambda: self.init_grid(4))
         self.four_button.place(x=200, y=150)
-        self.five_button = tk.Button(self.root, text="5x5", activebackground="light blue", bd=4,
-                                     command=lambda: self.display_table(5))
+        self.five_button = tk.Button(self.root, text="5x5", activebackground="#0099e6", bd=4,
+                                     command=lambda: self.init_grid(5))
         self.five_button.place(x=250, y=150)
-        self.six_button = tk.Button(self.root, text="6x6", activebackground="light blue", bd=4,
-                                    command=lambda: self.display_table(6))
+        self.six_button = tk.Button(self.root, text="6x6", activebackground="#0099e6", bd=4,
+                                    command=lambda: self.init_grid(6))
         self.six_button.place(x=300, y=150)
-        self.quit_button = tk.Button(self.root, text="quit", activebackground="red", bd=4,
+        self.quit_button = tk.Button(self.root, text="quit", activebackground="#ff8080", bd=4,
                                      command=self.root.destroy).place(x=450, y=450)
 
-    def display_table(self, size):
+    def init_grid(self, size):
+        # first destroy buttons
         self.destroy_buttons()
-        self.canvas = tk.Canvas()
 
-        for number in range(0, size+1):
-            for value in range(0, size+1):
-                self.canvas.create_rectangle(0+value*40, 0+number*40, 40+value*40, 40+number*40)
-        self.canvas.place(x=180-size*10, y=180-size*10)
+        # then create grid of buttons for the game
+        game_table = table.Table(size)
+        self.table_buttons = [[tk.Button(self.root, text=str(game_table.num_table[row][column]),
+                               command=self.button_clicked(row, column), height=2, width=4).
+                               place(x=250+(-(size/2)+column)*40, y=250+(-(size/2)+row)*40) for row in range(0, size)]
+                              for column in range(0, size)]
+
+        # then print sums values
+        self.sums_rows = [tk.Label(self.root, text=str(game_table.sums_rows[row]), height=2, width=4).
+                          place(x=250+(-(size/2)+size)*40, y=250+(-(size/2)+row)*40) for row in range(0, size)]
+        self.sums_columns = [tk.Label(self.root, text=str(game_table.sums_columns[column]),  height=2, width=4).
+                             place(x=250+(-(size/2)+column)*40, y=250+(-(size/2)+size)*40) for column in range(0, size)]
+
+    def button_clicked(self, row, column):
+        pass
 
     def destroy_buttons(self):
         self.msg.destroy()
@@ -45,3 +59,5 @@ class Window:
         self.four_button.destroy()
         self.five_button.destroy()
         self.six_button.destroy()
+
+
