@@ -37,7 +37,7 @@ class Window:
         self.size = size
         self.destroy_buttons()
         self.lets_start = tk.Label(self.root, text="You selected a board: %ix%i. Great, let's play!" % (size, size),
-                                   padx=10, pady=10, font="Helvetica 10").place(x=100, y=70)
+                                   padx=10, pady=10, font="Helvetica 10").place(x=100, y=100)
         self.table_grid = Grid(self.root, self.size)
 
     def destroy_buttons(self):
@@ -52,15 +52,40 @@ class Grid():
     def __init__(self, master, size):
         self.size = size
         self.canvas = tk.Canvas(master, width=260, height=260)
-        self.canvas.place(x=150, y=170)
-        self.grid_step = 20
-        self.start_x = 100-(self.size/2)*self.grid_step
-        self.start_y = 80-(self.size/2)*self.grid_step
+        self.canvas.place(x=120, y=150)
+        self.grid_step = 35
+        self.start_x = 120-(self.size/2)*self.grid_step
+        self.start_y = 120-(self.size/2)*self.grid_step
 
+        # init game table
+        game_table = table.Table(self.size)
+
+        # print table with numbers
         for row in range(0, self.size):
             for column in range(0, self.size):
                 self.canvas.create_rectangle(self.start_x+column*self.grid_step, self.start_y+row*self.grid_step,
-                                             self.start_x+self.grid_step, self.start_x+self.grid_step, fill="blue")
+                                             self.start_x+(column+1)*self.grid_step, self.start_y+(row+1)*self.grid_step,
+                                             fill="#b3d1ff")
+                self.canvas.create_text(self.start_x+18+column*self.grid_step, self.start_y+18+row*self.grid_step,
+                                        text=str(game_table.num_table[row][column]), font="Helvetica 10 bold")
+
+        # print rows sums
+        for row in range(0, self.size):
+            self.canvas.create_text(self.start_x+18+self.size*self.grid_step, self.start_y+18+row*self.grid_step,
+                                    text=str(game_table.sums_rows[row]), font="Helvetica 10 bold")
+
+        # print columns sums
+        for column in range(0, self.size):
+            self.canvas.create_text(self.start_x+18+column*self.grid_step, self.start_y+18+self.size*self.grid_step,
+                                    text=str(game_table.sums_columns[column]), font="Helvetica 10 bold")
+
+    def bind_mouse_click(self, callback=None):
+        if callback is None:
+            callback = self.change_colour_on_click
+        self.canvas.bind("<Button-1>", callback)
+
+    def change_colour_on_click(self, event, color='green'):
+        pass
 
 
 
